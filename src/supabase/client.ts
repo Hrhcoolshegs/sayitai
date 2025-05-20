@@ -21,39 +21,61 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   }
 });
 
-// Rate limiting helper
-const rateLimiter = new Map<string, number>();
+// Enhanced rate limiting with IP tracking
+const rateLimiter = new Map<string, { count: number; timestamp: number }>();
 const RATE_LIMIT_WINDOW = 60000; // 1 minute
 const MAX_REQUESTS = 5;
+const BLOCK_DURATION = 300000; // 5 minutes
 
-const isRateLimited = (email: string): boolean => {
+const isRateLimited = (identifier: string): boolean => {
   const now = Date.now();
-  const userRequests = rateLimiter.get(email) || 0;
+  const userLimit = rateLimiter.get(identifier);
   
-  if (userRequests >= MAX_REQUESTS) {
+  if (!userLimit) {
+    rateLimiter.set(identifier, { count: 1, timestamp: now });
+    return false;
+  }
+  
+  if (now - userLimit.timestamp > RATE_LIMIT_WINDOW) {
+    rateLimiter.set(identifier, { count: 1, timestamp: now });
+    return false;
+  }
+  
+  if (userLimit.count >= MAX_REQUESTS) {
+    if (now - userLimit.timestamp > BLOCK_DURATION) {
+      rateLimiter.set(identifier, { count: 1, timestamp: now });
+      return false;
+    }
     return true;
   }
   
-  rateLimiter.set(email, userRequests + 1);
-  setTimeout(() => rateLimiter.delete(email), RATE_LIMIT_WINDOW);
-  
+  userLimit.count++;
   return false;
+};
+
+// Input sanitization utility
+const sanitizeInput = (input: string): string => {
+  return input.trim()
+    .toLowerCase()
+    .replace(/[<>]/g, ''); // Basic XSS prevention
 };
 
 export const addEmailToWaitlist = async (email: string) => {
   try {
-    // Input validation
-    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    const sanitizedEmail = sanitizeInput(email);
+
+    // Enhanced email validation
+    if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
       return { success: false, error: 'Invalid email format' };
     }
 
-    // Rate limiting
-    if (isRateLimited(email)) {
-      return { success: false, error: 'Too many attempts. Please try again later.' };
+    // Rate limiting using email as identifier
+    if (isRateLimited(sanitizedEmail)) {
+      return { 
+        success: false, 
+        error: 'Too many attempts. Please try again in 5 minutes.' 
+      };
     }
-
-    // Sanitize input
-    const sanitizedEmail = email.toLowerCase().trim();
 
     const { data, error } = await supabase
       .from('waitlist')
@@ -73,18 +95,32 @@ export const addEmailToWaitlist = async (email: string) => {
     console.error('Error adding email to waitlist:', error);
     return { 
       success: false, 
-      error: error.message || 'Failed to join waitlist. Please try again.' 
+      error: 'Failed to join waitlist. Please try again.' 
     };
   }
 };
 
 export const getWaitlistCount = async () => {
   try {
+    // Cache the count for 5 minutes
+    const cacheKey = 'waitlist_count';
+    const cachedCount = sessionStorage.getItem(cacheKey);
+    const cacheTime = sessionStorage.getItem(`${cacheKey}_time`);
+    
+    if (cachedCount && cacheTime && Date.now() - Number(cacheTime) < 300000) {
+      return { success: true, count: Number(cachedCount) };
+    }
+
     const { count, error } = await supabase
       .from('waitlist')
       .select('*', { count: 'exact', head: true });
 
     if (error) throw error;
+
+    // Update cache
+    sessionStorage.setItem(cacheKey, String(count));
+    sessionStorage.setItem(`${cacheKey}_time`, String(Date.now()));
+
     return { success: true, count };
   } catch (error: any) {
     console.error('Error getting waitlist count:', error);

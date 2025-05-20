@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import HighlightAnimation from './animations/HighlightAnimation';
 import { MessageSquare } from 'lucide-react';
+
+const MemoizedHighlightAnimation = memo(HighlightAnimation);
 
 const Hero: React.FC = () => {
   const [showSayIt, setShowSayIt] = useState(false);
@@ -61,13 +63,18 @@ const Hero: React.FC = () => {
 
   const words = ["Never", "Mispronounce", "A Name", "Again"];
 
-  const handleIconClick = () => {
+  const handleIconClick = useCallback(() => {
     if (isIconRotated) {
       setShowSayIt(true);
     }
-  };
+  }, [isIconRotated]);
 
-  const renderWord = (word: string, isLastWord: boolean) => {
+  const handleSayItClick = useCallback(() => {
+    setShowSayIt(false);
+    setIsIconRotated(false);
+  }, []);
+
+  const renderWord = useCallback((word: string, isLastWord: boolean) => {
     return (
       <motion.span className="inline-block">
         {word.split('').map((letter, index) => {
@@ -85,7 +92,12 @@ const Hero: React.FC = () => {
                   animate={{ rotate: isIconRotated ? 360 : 0 }}
                   onHoverStart={() => setIsIconRotated(true)}
                   onClick={handleIconClick}
-                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  transition={{ 
+                    duration: 0.5, 
+                    ease: "easeInOut",
+                    type: "spring",
+                    stiffness: 200
+                  }}
                 >
                   <MessageSquare className="w-4 h-4 text-primary-light-from dark:text-primary-dark-from" />
                 </motion.span>
@@ -95,7 +107,7 @@ const Hero: React.FC = () => {
         })}
       </motion.span>
     );
-  };
+  }, [isIconRotated, handleIconClick]);
 
   return (
     <section className="relative min-h-[80vh] md:min-h-screen pt-24 md:pt-32 pb-16 overflow-hidden">
@@ -122,10 +134,7 @@ const Hero: React.FC = () => {
                   animate="visible"
                   exit="exit"
                   className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text cursor-pointer select-none"
-                  onClick={() => {
-                    setShowSayIt(false);
-                    setIsIconRotated(false);
-                  }}
+                  onClick={handleSayItClick}
                 >
                   Say It
                 </motion.h1>
@@ -170,7 +179,7 @@ const Hero: React.FC = () => {
             <div className="absolute inset-0 bg-gradient-to-r from-primary-light-from/5 to-primary-light-to/5 dark:from-primary-dark-from/5 dark:to-primary-dark-to/5 rounded-2xl transform -rotate-1"></div>
             <div className="absolute inset-0 bg-gradient-to-r from-primary-light-from/5 to-primary-light-to/5 dark:from-primary-dark-from/5 dark:to-primary-dark-to/5 rounded-2xl transform rotate-1"></div>
             <div className="relative glass-card rounded-2xl p-4 md:p-8 shadow-xl hover:shadow-glow transition-shadow duration-300">
-              <HighlightAnimation />
+              <MemoizedHighlightAnimation />
             </div>
           </motion.div>
         </motion.div>
