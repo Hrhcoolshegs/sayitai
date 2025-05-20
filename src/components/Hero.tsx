@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import HighlightAnimation from './animations/HighlightAnimation';
+import { MessageSquare } from 'lucide-react';
 
 const Hero: React.FC = () => {
-  // Optimized animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -46,6 +46,53 @@ const Hero: React.FC = () => {
 
   const words = ["Never", "Mispronounce", "A Name", "Again"];
 
+  const renderWord = (word: string, isLastWord: boolean) => {
+    const letters = word.split('');
+    return letters.map((letter, index) => {
+      // Special case for the last 'n' in "Again"
+      if (isLastWord && letter.toLowerCase() === 'n' && index === letters.length - 1) {
+        return (
+          <motion.span
+            key={index}
+            custom={index}
+            variants={letterVariants}
+            className="inline-flex items-center"
+            whileHover={{
+              scale: 1.2,
+              transition: { duration: 0.2 }
+            }}
+          >
+            {letter}
+            <motion.span
+              className="relative -top-4 -right-1 inline-block"
+              whileHover={{ 
+                scale: 1.2,
+                rotate: 360,
+                transition: { duration: 0.5 }
+              }}
+            >
+              <MessageSquare className="w-4 h-4 text-primary-light-from dark:text-primary-dark-from" />
+            </motion.span>
+          </motion.span>
+        );
+      }
+      return (
+        <motion.span
+          key={index}
+          custom={index}
+          variants={letterVariants}
+          className="inline-block"
+          whileHover={{
+            scale: 1.1,
+            transition: { duration: 0.2 }
+          }}
+        >
+          {letter}
+        </motion.span>
+      );
+    });
+  };
+
   return (
     <section className="relative min-h-[80vh] md:min-h-screen pt-24 md:pt-32 pb-16 overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -69,20 +116,23 @@ const Hero: React.FC = () => {
                 variants={wordVariants}
               >
                 <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text inline-block">
-                  {word.split('').map((letter, index) => (
-                    <motion.span
-                      key={index}
-                      custom={index}
-                      variants={letterVariants}
-                      className="inline-block"
-                      whileHover={{
-                        scale: 1.1,
-                        transition: { duration: 0.2 }
-                      }}
-                    >
-                      {letter}
-                    </motion.span>
-                  ))}
+                  {word === "A Name" ? (
+                    <>
+                      <motion.span
+                        variants={letterVariants}
+                        className="inline-block"
+                        whileHover={{
+                          scale: 1.1,
+                          transition: { duration: 0.2 }
+                        }}
+                      >
+                        A{' '}
+                      </motion.span>
+                      {renderWord("Name", false)}
+                    </>
+                  ) : (
+                    renderWord(word, word === "Again")
+                  )}
                 </h1>
               </motion.div>
             ))}
