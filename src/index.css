@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --toast-bg: #FFFFFF;
+    --toast-color: #111827;
+    --toast-border: rgba(99, 102, 241, 0.2);
+  }
+  
+  .dark {
+    --toast-bg: #1F2937;
+    --toast-color: #F9FAFB;
+    --toast-border: rgba(129, 140, 248, 0.2);
+  }
+  
+  html {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply antialiased text-text-light-primary dark:text-text-dark-primary bg-white dark:bg-gray-900 transition-colors duration-300;
+  }
+  
+  ::selection {
+    @apply bg-primary-light-from text-white dark:bg-primary-dark-from;
+  }
+}
+
+@layer utilities {
+  .shadow-glow {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50;
+  }
+  
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-light-from to-primary-light-to dark:from-primary-dark-from dark:to-primary-dark-to;
+  }
+  
+  .primary-button {
+    @apply px-6 py-3 rounded-lg font-medium text-white bg-gradient-to-r from-primary-light-from to-primary-light-to dark:from-primary-dark-from dark:to-primary-dark-to hover:shadow-glow transition-all duration-300 transform hover:-translate-y-0.5;
+  }
+  
+  .secondary-button {
+    @apply px-6 py-3 rounded-lg font-medium text-primary-light-from dark:text-primary-dark-from border-2 border-primary-light-from/20 dark:border-primary-dark-from/20 hover:border-primary-light-from dark:hover:border-primary-dark-from transition-all duration-300;
+  }
+  
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-primary-light-from/20 dark:focus:ring-primary-dark-from/20 focus:border-primary-light-from dark:focus:border-primary-dark-from transition-all duration-300;
+  }
+}
+
+/* Custom animations */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+/* Better focus styles */
+*:focus-visible {
+  @apply outline-none ring-2 ring-primary-light-from dark:ring-primary-dark-from ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-600;
+}
