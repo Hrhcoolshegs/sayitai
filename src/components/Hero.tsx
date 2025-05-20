@@ -61,7 +61,7 @@ const Hero: React.FC = () => {
     }
   };
 
-  const words = ["Never", "Mispronounce", "A Name", "Again"];
+  const words = ["Never", "Mispronounce", ["A", "Name"], "Again"];
 
   const handleIconClick = useCallback(() => {
     if (isIconRotated) {
@@ -74,7 +74,17 @@ const Hero: React.FC = () => {
     setIsIconRotated(false);
   }, []);
 
-  const renderWord = useCallback((word: string, isLastWord: boolean) => {
+  const renderWord = useCallback((word: string | string[], isLastWord: boolean) => {
+    if (Array.isArray(word)) {
+      return (
+        <motion.span className="inline-flex gap-4">
+          {word.map((part, idx) => (
+            <motion.span key={idx} className="inline-block">{part}</motion.span>
+          ))}
+        </motion.span>
+      );
+    }
+
     return (
       <motion.span className="inline-block">
         {word.split('').map((letter, index) => {
