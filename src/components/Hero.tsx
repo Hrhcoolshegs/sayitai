@@ -12,8 +12,7 @@ const Hero: React.FC = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
-        delayChildren: 0.1,
-        duration: 0.5
+        delayChildren: 0.1
       }
     }
   };
@@ -29,71 +28,69 @@ const Hero: React.FC = () => {
       transition: {
         type: "spring",
         stiffness: 100,
-        damping: 10,
-        duration: 0.5
+        damping: 10
       }
     }
   };
 
-  const letterVariants = {
-    hidden: { opacity: 0 },
-    visible: (i: number) => ({
+  const sayItVariants = {
+    hidden: { 
+      opacity: 0,
+      scale: 0.8,
+      y: 20
+    },
+    visible: { 
       opacity: 1,
+      scale: 1,
+      y: 0,
       transition: {
-        delay: i * 0.03,
+        type: "spring",
+        stiffness: 200,
+        damping: 20
+      }
+    },
+    exit: {
+      opacity: 0,
+      scale: 0.8,
+      transition: {
         duration: 0.2
       }
-    })
+    }
   };
 
   const words = ["Never", "Mispronounce", "A Name", "Again"];
 
   const renderWord = (word: string, isLastWord: boolean) => {
-    const letters = word.split('');
-    return letters.map((letter, index) => {
-      // Special case for the last 'n' in "Again"
-      if (isLastWord && letter.toLowerCase() === 'n' && index === letters.length - 1) {
-        return (
-          <motion.span
-            key={index}
-            custom={index}
-            variants={letterVariants}
-            className="inline-flex items-center cursor-pointer"
-            whileHover={{
-              scale: 1.2,
-              transition: { duration: 0.2 }
-            }}
-            onHoverStart={() => setShowSayIt(true)}
-          >
-            {letter}
+    return (
+      <motion.span className="inline-block">
+        {word.split('').map((letter, index) => {
+          const isLastN = isLastWord && letter.toLowerCase() === 'n' && index === word.length - 1;
+          
+          return (
             <motion.span
-              className="relative -top-4 -right-1 inline-block"
-              whileHover={{ 
+              key={`${word}-${index}`}
+              className={`inline-block ${isLastN ? 'cursor-pointer' : ''}`}
+              whileHover={isLastN ? {
                 scale: 1.2,
-                rotate: 360,
-                transition: { duration: 0.5 }
-              }}
+                transition: { duration: 0.2 }
+              } : undefined}
+              onHoverStart={() => isLastN && setShowSayIt(true)}
             >
-              <MessageSquare className="w-4 h-4 text-primary-light-from dark:text-primary-dark-from" />
+              {letter}
+              {isLastN && (
+                <motion.span
+                  className="relative -top-4 -right-1 inline-block"
+                  animate={{ rotate: showSayIt ? 360 : 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <MessageSquare className="w-4 h-4 text-primary-light-from dark:text-primary-dark-from" />
+                </motion.span>
+              )}
             </motion.span>
-          </motion.span>
-        );
-      }
-      return (
-        <motion.span
-          key={index}
-          custom={index}
-          variants={letterVariants}
-          className="inline-block"
-          whileHover={{
-            scale: 1.1,
-            transition: { duration: 0.2 }
-          }}
-        >
-          {letter}
-        </motion.span>
-      );
-    });
+          );
+        })}
+      </motion.span>
+    );
   };
 
   return (
@@ -109,56 +106,39 @@ const Hero: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, amount: 0.3 }}
         >
-          <div className="mb-6 md:mb-8 space-y-2 md:space-y-4">
+          <div className="mb-6 md:mb-8 space-y-2 md:space-y-4 min-h-[280px] md:min-h-[400px] flex items-center justify-center">
             <AnimatePresence mode="wait">
               {showSayIt ? (
-                <motion.div
+                <motion.h1
                   key="say-it"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.3 }}
-                  className="h-[280px] md:h-[400px] flex items-center justify-center cursor-pointer"
+                  variants={sayItVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text cursor-pointer select-none"
                   onClick={() => setShowSayIt(false)}
                 >
-                  <h1 className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text">
-                    Say It
-                  </h1>
-                </motion.div>
+                  Say It
+                </motion.h1>
               ) : (
                 <motion.div
                   key="main-text"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.3 }}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={containerVariants}
+                  className="space-y-2 md:space-y-4"
                 >
                   {words.map((word, i) => (
                     <motion.div
                       key={i}
-                      className="overflow-hidden"
                       variants={wordVariants}
+                      className="overflow-hidden"
                     >
-                      <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text inline-block">
-                        {word === "A Name" ? (
-                          <>
-                            <motion.span
-                              variants={letterVariants}
-                              className="inline-block"
-                              whileHover={{
-                                scale: 1.1,
-                                transition: { duration: 0.2 }
-                              }}
-                            >
-                              A{' '}
-                            </motion.span>
-                            {renderWord("Name", false)}
-                          </>
-                        ) : (
-                          renderWord(word, word === "Again")
-                        )}
+                      <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text select-none">
+                        {renderWord(word, word === "Again")}
                       </h1>
                     </motion.div>
                   ))}
