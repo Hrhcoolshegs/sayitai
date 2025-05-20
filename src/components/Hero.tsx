@@ -5,6 +5,7 @@ import { MessageSquare } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const [showSayIt, setShowSayIt] = useState(false);
+  const [isIconRotated, setIsIconRotated] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -60,6 +61,12 @@ const Hero: React.FC = () => {
 
   const words = ["Never", "Mispronounce", "A Name", "Again"];
 
+  const handleIconClick = () => {
+    if (isIconRotated) {
+      setShowSayIt(true);
+    }
+  };
+
   const renderWord = (word: string, isLastWord: boolean) => {
     return (
       <motion.span className="inline-block">
@@ -70,17 +77,14 @@ const Hero: React.FC = () => {
             <motion.span
               key={`${word}-${index}`}
               className={`inline-block ${isLastN ? 'cursor-pointer' : ''}`}
-              whileHover={isLastN ? {
-                scale: 1.2,
-                transition: { duration: 0.2 }
-              } : undefined}
-              onHoverStart={() => isLastN && setShowSayIt(true)}
             >
               {letter}
               {isLastN && (
                 <motion.span
                   className="relative -top-4 -right-1 inline-block"
-                  animate={{ rotate: showSayIt ? 360 : 0 }}
+                  animate={{ rotate: isIconRotated ? 360 : 0 }}
+                  onHoverStart={() => setIsIconRotated(true)}
+                  onClick={handleIconClick}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                 >
                   <MessageSquare className="w-4 h-4 text-primary-light-from dark:text-primary-dark-from" />
@@ -118,7 +122,10 @@ const Hero: React.FC = () => {
                   animate="visible"
                   exit="exit"
                   className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text cursor-pointer select-none"
-                  onClick={() => setShowSayIt(false)}
+                  onClick={() => {
+                    setShowSayIt(false);
+                    setIsIconRotated(false);
+                  }}
                 >
                   Say It
                 </motion.h1>
