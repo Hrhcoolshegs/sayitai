@@ -64,7 +64,6 @@ const Hero: React.FC = () => {
               transition: { duration: 0.2 }
             }}
             onHoverStart={() => setShowSayIt(true)}
-            onHoverEnd={() => setShowSayIt(false)}
           >
             {letter}
             <motion.span
@@ -121,7 +120,8 @@ const Hero: React.FC = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
                   transition={{ duration: 0.3 }}
-                  className="h-[280px] md:h-[400px] flex items-center justify-center"
+                  className="h-[280px] md:h-[400px] flex items-center justify-center cursor-pointer"
+                  onClick={() => setShowSayIt(false)}
                 >
                   <h1 className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text">
                     Say It
