@@ -1,9 +1,11 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import HighlightAnimation from './animations/HighlightAnimation';
 import { MessageSquare } from 'lucide-react';
 
 const Hero: React.FC = () => {
+  const [showSayIt, setShowSayIt] = useState(false);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -56,11 +58,13 @@ const Hero: React.FC = () => {
             key={index}
             custom={index}
             variants={letterVariants}
-            className="inline-flex items-center"
+            className="inline-flex items-center cursor-pointer"
             whileHover={{
               scale: 1.2,
               transition: { duration: 0.2 }
             }}
+            onHoverStart={() => setShowSayIt(true)}
+            onHoverEnd={() => setShowSayIt(false)}
           >
             {letter}
             <motion.span
@@ -109,33 +113,58 @@ const Hero: React.FC = () => {
           viewport={{ once: true, margin: "-50px" }}
         >
           <div className="mb-6 md:mb-8 space-y-2 md:space-y-4">
-            {words.map((word, i) => (
-              <motion.div
-                key={i}
-                className="overflow-hidden"
-                variants={wordVariants}
-              >
-                <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text inline-block">
-                  {word === "A Name" ? (
-                    <>
-                      <motion.span
-                        variants={letterVariants}
-                        className="inline-block"
-                        whileHover={{
-                          scale: 1.1,
-                          transition: { duration: 0.2 }
-                        }}
-                      >
-                        A{' '}
-                      </motion.span>
-                      {renderWord("Name", false)}
-                    </>
-                  ) : (
-                    renderWord(word, word === "Again")
-                  )}
-                </h1>
-              </motion.div>
-            ))}
+            <AnimatePresence mode="wait">
+              {showSayIt ? (
+                <motion.div
+                  key="say-it"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3 }}
+                  className="h-[280px] md:h-[400px] flex items-center justify-center"
+                >
+                  <h1 className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text">
+                    Say It
+                  </h1>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="main-text"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {words.map((word, i) => (
+                    <motion.div
+                      key={i}
+                      className="overflow-hidden"
+                      variants={wordVariants}
+                    >
+                      <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text inline-block">
+                        {word === "A Name" ? (
+                          <>
+                            <motion.span
+                              variants={letterVariants}
+                              className="inline-block"
+                              whileHover={{
+                                scale: 1.1,
+                                transition: { duration: 0.2 }
+                              }}
+                            >
+                              A{' '}
+                            </motion.span>
+                            {renderWord("Name", false)}
+                          </>
+                        ) : (
+                          renderWord(word, word === "Again")
+                        )}
+                      </h1>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <motion.p 
