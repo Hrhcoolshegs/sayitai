@@ -84,7 +84,7 @@ const BookDemo: React.FC<BookDemoProps> = ({ isOpen, onClose }) => {
                     Demo Request Submitted!
                   </h3>
                   <p className="text-text-light-secondary dark:text-text-dark-secondary mb-6">
-                    We'll get back to you shortly to confirm your demo session.
+                    We'll get back to you within 24 hours to confirm your demo session.
                   </p>
                   <button
                     onClick={handleClose}
