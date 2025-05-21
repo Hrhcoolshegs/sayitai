@@ -12,20 +12,20 @@ export default {
         'montserrat': ['Montserrat', 'sans-serif'],
       },
       colors: {
-        // Light mode - Enhanced for better contrast and visual appeal
-        'primary-light-from': '#6366F1',
-        'primary-light-to': '#4F46E5',
-        'secondary-light-from': '#EC4899',
-        'secondary-light-to': '#F43F5E',
-        'accent-light-teal': '#14B8A6',
-        'accent-light-lavender': '#8B5CF6',
-        'accent-light-peach': '#F97316',
-        'text-light-primary': '#111827',
-        'text-light-secondary': '#374151',
-        'text-light-tertiary': '#6B7280',
-        'bg-light-card': '#F9FAFB',
+        // Light mode - Refined for better visual hierarchy and contrast
+        'primary-light-from': '#4F46E5', // Deeper indigo for stronger presence
+        'primary-light-to': '#4338CA', // Rich indigo for depth
+        'secondary-light-from': '#E11D48', // Vibrant rose for emphasis
+        'secondary-light-to': '#BE123C', // Deep rose for contrast
+        'accent-light-teal': '#0D9488', // Refined teal for accents
+        'accent-light-lavender': '#7C3AED', // Rich purple for highlights
+        'accent-light-peach': '#EA580C', // Warm orange for attention
+        'text-light-primary': '#0F172A', // Near-black for primary text
+        'text-light-secondary': '#1E293B', // Deep slate for secondary text
+        'text-light-tertiary': '#475569', // Medium slate for tertiary text
+        'bg-light-card': '#F8FAFC', // Subtle off-white for cards
         
-        // Dark mode - More vibrant and engaging
+        // Dark mode - Keeping the existing vibrant scheme
         'primary-dark-from': '#818CF8',
         'primary-dark-to': '#6366F1',
         'secondary-dark-from': '#F472B6',
@@ -49,8 +49,8 @@ export default {
         },
       },
       boxShadow: {
-        'glow': '0 0 40px -10px rgba(99, 102, 241, 0.5)',
-        'glow-lg': '0 0 60px -15px rgba(99, 102, 241, 0.6)',
+        'glow': '0 0 40px -10px rgba(79, 70, 229, 0.5)', // Updated to match new primary color
+        'glow-lg': '0 0 60px -15px rgba(79, 70, 229, 0.6)', // Updated to match new primary color
       },
     },
   },
