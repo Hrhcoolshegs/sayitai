@@ -23,15 +23,33 @@ const Hero: React.FC = () => {
   const wordVariants = {
     hidden: { 
       opacity: 0,
-      y: 20
+      y: 20,
+      scale: 0.95
     },
     visible: { 
       opacity: 1,
       y: 0,
+      scale: 1,
       transition: {
         type: "spring",
         stiffness: 100,
         damping: 10
+      }
+    }
+  };
+
+  const glowVariants = {
+    initial: { textShadow: "0 0 0px rgba(79, 70, 229, 0)" },
+    animate: {
+      textShadow: [
+        "0 0 20px rgba(79, 70, 229, 0.3)",
+        "0 0 40px rgba(79, 70, 229, 0.5)",
+        "0 0 20px rgba(79, 70, 229, 0.3)"
+      ],
+      transition: {
+        duration: 2,
+        repeat: Infinity,
+        repeatType: "reverse"
       }
     }
   };
@@ -79,14 +97,27 @@ const Hero: React.FC = () => {
       return (
         <motion.span className="inline-flex gap-2 xs:gap-4">
           {word.map((part, idx) => (
-            <motion.span key={idx} className="inline-block">{part}</motion.span>
+            <motion.span 
+              key={idx} 
+              className="inline-block font-black"
+              variants={glowVariants}
+              initial="initial"
+              animate="animate"
+            >
+              {part}
+            </motion.span>
           ))}
         </motion.span>
       );
     }
 
     return (
-      <motion.span className="inline-block">
+      <motion.span 
+        className={`inline-block font-black ${isLastWord ? 'relative' : ''}`}
+        variants={glowVariants}
+        initial="initial"
+        animate="animate"
+      >
         {word.split('').map((letter, index) => {
           const isLastN = isLastWord && letter.toLowerCase() === 'n' && index === word.length - 1;
           
