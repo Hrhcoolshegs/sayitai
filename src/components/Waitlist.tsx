@@ -4,6 +4,7 @@ import { Send, Users, PartyPopper } from 'lucide-react';
 import { addEmailToWaitlist, getWaitlistCount } from '../supabase/client';
 import toast from 'react-hot-toast';
 import confetti from 'canvas-confetti';
+import CountdownTimer from './CountdownTimer';
 
 const Waitlist: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -89,13 +90,22 @@ const Waitlist: React.FC = () => {
               Join Our Waitlist
             </motion.h2>
             <motion.p 
-              className="text-xl text-text-light-secondary dark:text-text-dark-secondary"
+              className="text-xl text-text-light-secondary dark:text-text-dark-secondary mb-8"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
               Be among the first 500 users to get lifetime premium access.
             </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="mb-12"
+            >
+              <CountdownTimer />
+            </motion.div>
           </div>
           
           <AnimatePresence mode="wait">
@@ -155,13 +165,6 @@ const Waitlist: React.FC = () => {
                   <div className="flex items-center space-x-2 text-primary-light-from dark:text-primary-dark-from">
                     <Users className="w-5 h-5" />
                     <span className="font-semibold">{waitlistCount} people joined</span>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="h-px w-16 bg-gradient-to-r from-transparent to-gray-200 dark:to-gray-700"></div>
-                    <div className="mx-4 text-sm text-text-light-tertiary dark:text-text-dark-tertiary">
-                      Coming in 8 weeks
-                    </div>
-                    <div className="h-px w-16 bg-gradient-to-r from-gray-200 dark:from-gray-700 to-transparent"></div>
                   </div>
                 </div>
               </motion.div>
