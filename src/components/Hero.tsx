@@ -77,44 +77,65 @@ const Hero: React.FC = () => {
   const renderWord = useCallback((word: string | string[], isLastWord: boolean) => {
     if (Array.isArray(word)) {
       return (
-        <motion.span className="inline-flex gap-4">
+        <motion.div className="flex gap-4 justify-center">
           {word.map((part, idx) => (
-            <motion.span key={idx} className="inline-block">{part}</motion.span>
+            <motion.span 
+              key={idx} 
+              className="inline-block bg-gradient-to-r from-accent-light-lavender to-accent-light-teal dark:from-accent-dark-lavender dark:to-accent-dark-teal bg-clip-text text-transparent"
+            >
+              {part}
+            </motion.span>
           ))}
-        </motion.span>
+        </motion.div>
+      );
+    }
+
+    if (isLastWord) {
+      return (
+        <motion.div className="relative inline-block">
+          <motion.span className="relative">
+            {word.split('').map((letter, index) => {
+              const isLastLetter = index === word.length - 1;
+              return (
+                <motion.span
+                  key={`${word}-${index}`}
+                  className={`inline-block ${isLastLetter ? 'relative' : ''}`}
+                  whileHover={isLastLetter ? { scale: 1.1 } : {}}
+                >
+                  {letter}
+                  {isLastLetter && (
+                    <motion.span
+                      className="absolute -top-4 -right-1 inline-block cursor-pointer"
+                      animate={{ rotate: isIconRotated ? 360 : 0 }}
+                      onHoverStart={() => setIsIconRotated(true)}
+                      onClick={handleIconClick}
+                      transition={{ 
+                        duration: 0.5, 
+                        ease: "easeInOut",
+                        type: "spring",
+                        stiffness: 200
+                      }}
+                    >
+                      <MessageSquare className="w-4 h-4 text-primary-light-from dark:text-primary-dark-from" />
+                    </motion.span>
+                  )}
+                </motion.span>
+              );
+            })}
+          </motion.span>
+        </motion.div>
       );
     }
 
     return (
-      <motion.span className="inline-block">
-        {word.split('').map((letter, index) => {
-          const isLastN = isLastWord && letter.toLowerCase() === 'n' && index === word.length - 1;
-          
-          return (
-            <motion.span
-              key={`${word}-${index}`}
-              className={`inline-block ${isLastN ? 'cursor-pointer' : ''}`}
-            >
-              {letter}
-              {isLastN && (
-                <motion.span
-                  className="relative -top-4 -right-1 inline-block"
-                  animate={{ rotate: isIconRotated ? 360 : 0 }}
-                  onHoverStart={() => setIsIconRotated(true)}
-                  onClick={handleIconClick}
-                  transition={{ 
-                    duration: 0.5, 
-                    ease: "easeInOut",
-                    type: "spring",
-                    stiffness: 200
-                  }}
-                >
-                  <MessageSquare className="w-4 h-4 text-primary-light-from dark:text-primary-dark-from" />
-                </motion.span>
-              )}
-            </motion.span>
-          );
-        })}
+      <motion.span 
+        className={`inline-block ${
+          word === "Never" ? "text-secondary-light-from dark:text-secondary-dark-from" :
+          word === "Mispronounce" ? "text-primary-light-from dark:text-primary-dark-from" :
+          ""
+        }`}
+      >
+        {word}
       </motion.span>
     );
   }, [isIconRotated, handleIconClick]);
@@ -163,7 +184,7 @@ const Hero: React.FC = () => {
                       variants={wordVariants}
                       className="overflow-hidden"
                     >
-                      <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text select-none">
+                      <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold">
                         {renderWord(word, word === "Again")}
                       </h1>
                     </motion.div>
