@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Mail, Building2, User, PartyPopper } from 'lucide-react';
+import { X, Calendar, Mail, User, PartyPopper } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { supabase } from '../supabase/client';
 import confetti from 'canvas-confetti';
@@ -14,7 +14,6 @@ const BookDemo: React.FC<BookDemoProps> = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    company: '',
     date: ''
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +41,7 @@ const BookDemo: React.FC<BookDemoProps> = ({ isOpen, onClose }) => {
 
       setShowSuccess(true);
       triggerConfetti();
-      setFormData({ name: '', email: '', company: '', date: '' });
+      setFormData({ name: '', email: '', date: '' });
     } catch (error: any) {
       toast.error(error.message || 'Failed to submit demo request. Please try again.');
     } finally {
@@ -143,23 +142,6 @@ const BookDemo: React.FC<BookDemoProps> = ({ isOpen, onClose }) => {
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                           className="input-field pl-10"
                           placeholder="john@example.com"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-text-light-secondary dark:text-text-dark-secondary mb-1">
-                        Company
-                      </label>
-                      <div className="relative">
-                        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-light-tertiary dark:text-text-dark-tertiary" />
-                        <input
-                          type="text"
-                          required
-                          value={formData.company}
-                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                          className="input-field pl-10"
-                          placeholder="Company Name"
                         />
                       </div>
                     </div>
