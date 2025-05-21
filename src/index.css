@@ -37,7 +37,7 @@
 
 @layer components {
   .glass-card {
-    @apply backdrop-blur-xl bg-white/60 dark:bg-gray-900/60 border border-white/20 dark:border-gray-700/20 shadow-xl;
+    @apply backdrop-blur-lg bg-white/80 dark:bg-gray-900/80 border border-gray-200/50 dark:border-gray-700/50;
   }
   
   .gradient-text {
