@@ -79,14 +79,14 @@ const Hero: React.FC = () => {
       return (
         <motion.span className="inline-flex gap-2 xs:gap-4">
           {word.map((part, idx) => (
-            <motion.span key={idx} className="inline-block font-display font-extrabold tracking-tight">{part}</motion.span>
+            <motion.span key={idx} className="inline-block font-display font-extrabold tracking-tight leading-[1.1]">{part}</motion.span>
           ))}
         </motion.span>
       );
     }
 
     return (
-      <motion.span className="inline-block font-display font-extrabold tracking-tight">
+      <motion.span className="inline-block font-display font-extrabold tracking-tight leading-[1.1]">
         {word.split('').map((letter, index) => {
           const isLastN = isLastWord && letter.toLowerCase() === 'n' && index === word.length - 1;
           
@@ -143,7 +143,7 @@ const Hero: React.FC = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="text-5xl xs:text-6xl sm:text-7xl md:text-9xl font-extrabold font-display gradient-text cursor-pointer select-none tracking-tight"
+                  className="text-5xl xs:text-6xl sm:text-7xl md:text-9xl font-extrabold font-display gradient-text cursor-pointer select-none tracking-tight leading-[1.1] py-2"
                   onClick={handleSayItClick}
                 >
                   Say It
@@ -163,7 +163,7 @@ const Hero: React.FC = () => {
                       variants={wordVariants}
                       className="overflow-visible mb-2 xs:mb-3 md:mb-4"
                     >
-                      <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-7xl font-extrabold gradient-text select-none tracking-tight">
+                      <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-7xl font-extrabold gradient-text select-none tracking-tight leading-[1.1] py-2">
                         {renderWord(word, word === "Again")}
                       </h1>
                     </motion.div>
