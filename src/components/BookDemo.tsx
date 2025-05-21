@@ -149,7 +149,7 @@ const BookDemo: React.FC<BookDemoProps> = ({ isOpen, onClose }) => {
 
                     <div>
                       <label className="block text-sm font-medium text-text-light-secondary dark:text-text-dark-secondary mb-1">
-                        Company
+                        What would you like to see on Say It?
                       </label>
                       <div className="relative">
                         <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-light-tertiary dark:text-text-dark-tertiary" />
@@ -159,7 +159,7 @@ const BookDemo: React.FC<BookDemoProps> = ({ isOpen, onClose }) => {
                           value={formData.company}
                           onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                           className="input-field pl-10"
-                          placeholder="Company Name"
+                          placeholder="Share your ideas..."
                         />
                       </div>
                     </div>
