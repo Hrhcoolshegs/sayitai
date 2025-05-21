@@ -96,26 +96,13 @@ export const addEmailToWaitlist = async (email: string) => {
 
 export const getWaitlistCount = async () => {
   try {
-    // Cache the count for 5 minutes
-    const cacheKey = 'waitlist_count';
-    const cachedCount = sessionStorage.getItem(cacheKey);
-    const cacheTime = sessionStorage.getItem(`${cacheKey}_time`);
-    
-    if (cachedCount && cacheTime && Date.now() - Number(cacheTime) < 300000) {
-      return { success: true, count: Number(cachedCount) };
-    }
-
-    const { count, error } = await supabase
+    const { data, error } = await supabase
       .from('justsayitai_waitlist')
-      .select('*', { count: 'exact', head: true });
+      .select('id');
 
     if (error) throw error;
 
-    // Update cache
-    sessionStorage.setItem(cacheKey, String(count));
-    sessionStorage.setItem(`${cacheKey}_time`, String(Date.now()));
-
-    return { success: true, count };
+    return { success: true, count: data.length };
   } catch (error: any) {
     console.error('Error getting waitlist count:', error);
     return { 
