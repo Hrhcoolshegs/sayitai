@@ -12,12 +12,6 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true
-  },
-  global: {
-    headers: {
-      'x-application-name': 'say-it',
-      'x-application-version': '1.0.0'
-    }
   }
 });
 
@@ -78,7 +72,7 @@ export const addEmailToWaitlist = async (email: string) => {
     }
 
     const { data, error } = await supabase
-      .from('waitlist')
+      .from('justsayitai_waitlist')
       .insert([{ email: sanitizedEmail }])
       .select()
       .single();
@@ -112,7 +106,7 @@ export const getWaitlistCount = async () => {
     }
 
     const { count, error } = await supabase
-      .from('waitlist')
+      .from('justsayitai_waitlist')
       .select('*', { count: 'exact', head: true });
 
     if (error) throw error;
