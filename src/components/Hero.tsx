@@ -120,7 +120,7 @@ const Hero: React.FC = () => {
   }, [isIconRotated, handleIconClick]);
 
   return (
-    <section className="relative min-h-[80vh] md:min-h-screen pt-24 md:pt-32 pb-16 overflow-hidden">
+    <section className="relative min-h-[90vh] md:min-h-screen pt-24 md:pt-32 pb-16 overflow-hidden">
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-0 left-0 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-gradient-to-r from-primary-light-from/20 to-primary-light-to/20 dark:from-primary-dark-from/20 dark:to-primary-dark-to/20 rounded-full blur-3xl animate-float-slow"></div>
         <div className="absolute bottom-0 right-0 w-[200px] md:w-[600px] h-[200px] md:h-[600px] bg-gradient-to-r from-secondary-light-from/10 to-secondary-light-to/10 dark:from-secondary-dark-from/10 dark:to-secondary-dark-to/10 rounded-full blur-3xl animate-float-slow" style={{ animationDelay: '-3s' }}></div>
@@ -143,7 +143,7 @@ const Hero: React.FC = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text cursor-pointer select-none"
+                  className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text cursor-pointer select-none glass-card px-12 py-6 rounded-2xl"
                   onClick={handleSayItClick}
                 >
                   Say It
@@ -155,13 +155,13 @@ const Hero: React.FC = () => {
                   animate="visible"
                   exit="exit"
                   variants={containerVariants}
-                  className="space-y-2 md:space-y-4"
+                  className="space-y-4 md:space-y-6 glass-card px-8 py-6 md:px-12 md:py-8 rounded-2xl"
                 >
                   {words.map((word, i) => (
                     <motion.div
                       key={i}
                       variants={wordVariants}
-                      className="overflow-hidden"
+                      className="overflow-visible"
                     >
                       <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text select-none">
                         {renderWord(word, word === "Again")}
@@ -174,7 +174,7 @@ const Hero: React.FC = () => {
           </div>
 
           <motion.p 
-            className="text-lg xs:text-xl md:text-2xl text-text-light-secondary dark:text-text-dark-secondary max-w-3xl mx-auto mb-12 md:mb-16"
+            className="text-lg xs:text-xl md:text-2xl text-text-light-secondary dark:text-text-dark-secondary max-w-3xl mx-auto mb-12 md:mb-16 glass-card px-6 py-4 rounded-xl"
             variants={wordVariants}
           >
             Get instant name pronunciations with a simple highlight.
