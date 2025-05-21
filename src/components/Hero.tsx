@@ -161,9 +161,9 @@ const Hero: React.FC = () => {
                     <motion.div
                       key={i}
                       variants={wordVariants}
-                      className="overflow-visible pb-8 mb-2" // Increased padding and added margin
+                      className="overflow-visible mb-4 pb-4"
                     >
-                      <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text select-none leading-tight"> {/* Added leading-tight */}
+                      <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text select-none leading-[1.3]">
                         {renderWord(word, word === "Again")}
                       </h1>
                     </motion.div>
