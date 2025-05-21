@@ -161,7 +161,7 @@ const Hero: React.FC = () => {
                     <motion.div
                       key={i}
                       variants={wordVariants}
-                      className="overflow-hidden"
+                      className="overflow-visible pb-6" // Added padding-bottom and changed overflow to visible
                     >
                       <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text select-none">
                         {renderWord(word, word === "Again")}
