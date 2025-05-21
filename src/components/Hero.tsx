@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
   const renderWord = useCallback((word: string | string[], isLastWord: boolean) => {
     if (Array.isArray(word)) {
       return (
-        <motion.span className="inline-flex gap-4">
+        <motion.span className="inline-flex gap-2 xs:gap-4">
           {word.map((part, idx) => (
             <motion.span key={idx} className="inline-block">{part}</motion.span>
           ))}
@@ -120,7 +120,7 @@ const Hero: React.FC = () => {
   }, [isIconRotated, handleIconClick]);
 
   return (
-    <section className="relative min-h-[80vh] md:min-h-screen pt-24 md:pt-32 pb-16 overflow-hidden">
+    <section className="relative min-h-[90vh] xs:min-h-[80vh] md:min-h-screen pt-20 xs:pt-24 md:pt-32 pb-16 overflow-hidden">
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-0 left-0 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-gradient-to-r from-primary-light-from/20 to-primary-light-to/20 dark:from-primary-dark-from/20 dark:to-primary-dark-to/20 rounded-full blur-3xl animate-float-slow"></div>
         <div className="absolute bottom-0 right-0 w-[200px] md:w-[600px] h-[200px] md:h-[600px] bg-gradient-to-r from-secondary-light-from/10 to-secondary-light-to/10 dark:from-secondary-dark-from/10 dark:to-secondary-dark-to/10 rounded-full blur-3xl animate-float-slow" style={{ animationDelay: '-3s' }}></div>
@@ -143,7 +143,7 @@ const Hero: React.FC = () => {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="text-6xl xs:text-7xl md:text-9xl font-black font-montserrat gradient-text cursor-pointer select-none"
+                  className="text-5xl xs:text-6xl sm:text-7xl md:text-9xl font-black font-montserrat gradient-text cursor-pointer select-none"
                   onClick={handleSayItClick}
                 >
                   Say It
@@ -155,15 +155,15 @@ const Hero: React.FC = () => {
                   animate="visible"
                   exit="exit"
                   variants={containerVariants}
-                  className="space-y-2 md:space-y-4"
+                  className="space-y-1 xs:space-y-2 md:space-y-4"
                 >
                   {words.map((word, i) => (
                     <motion.div
                       key={i}
                       variants={wordVariants}
-                      className="overflow-visible mb-4 pb-4"
+                      className="overflow-visible mb-2 xs:mb-3 md:mb-4"
                     >
-                      <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold gradient-text select-none leading-[1.3]">
+                      <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-7xl font-bold gradient-text select-none leading-[1.2] xs:leading-[1.3]">
                         {renderWord(word, word === "Again")}
                       </h1>
                     </motion.div>
@@ -174,7 +174,7 @@ const Hero: React.FC = () => {
           </div>
 
           <motion.p 
-            className="text-lg xs:text-xl md:text-2xl text-text-light-secondary dark:text-text-dark-secondary max-w-3xl mx-auto mb-12 md:mb-16"
+            className="text-base xs:text-lg sm:text-xl md:text-2xl text-text-light-secondary dark:text-text-dark-secondary max-w-3xl mx-auto mb-8 xs:mb-12 md:mb-16 px-4"
             variants={wordVariants}
           >
             Get instant name pronunciations with a simple highlight.
